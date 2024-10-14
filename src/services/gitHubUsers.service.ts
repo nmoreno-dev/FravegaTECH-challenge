@@ -5,7 +5,9 @@ async function getUsers(query?: string) {
   try {
     const queryParams = query ? `q=${query}` : "";
 
-    const response = await gitHubApi.get<GitHubUser[]>(`/users?${queryParams}`);
+    const response = await gitHubApi.get<GitHubUser[]>(
+      `/users?per_page=100&page=4&${queryParams}`
+    );
 
     if (response && response.data) {
       return response;
