@@ -1,6 +1,7 @@
 import { PropsWithChildren } from "react";
 import localFont from "next/font/local";
 import styles from "./styles.module.css";
+import Link from "next/link";
 
 const geistSans = localFont({
   src: "../../pages/fonts/GeistVF.woff",
@@ -18,7 +19,9 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
       className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}
     >
       <header className={styles.header}>
-        <h1>GitHub Users API</h1>
+        <Link href={"/"}>
+          <h1>GitHub Users API</h1>
+        </Link>
       </header>
       {children}
       <footer className={styles.footer}>

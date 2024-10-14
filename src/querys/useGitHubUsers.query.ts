@@ -14,3 +14,9 @@ export const useSearchGithubUsers = (query?: string) =>
     queryFn: () => gitHubUsersService.searchUsers(query!),
     enabled: !!query,
   });
+
+export const useGetUserByUserName = (userName: string) =>
+  useQuery({
+    queryKey: ["gitHubUsers"],
+    queryFn: () => gitHubUsersService.getUserByUserName(userName!),
+  });
