@@ -7,7 +7,7 @@ import {
 } from "../querys/useGitHubUsers.query";
 import UserCard from "../components/UserCard";
 import Searcher from "../components/Search";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -21,21 +21,31 @@ const geistMono = localFont({
 });
 
 export default function Home() {
-  const [searchQuery, setSearchQuery] = useState<string>();
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
+  // Hook para listar todos los usuarios si no hay búsqueda activa
   const {
     data: usersData,
     isLoading: isLoadingList,
     isError: isErrorList,
   } = useListGithubUsers({
-    enabled: !searchQuery,
+    enabled: !searchQuery, // Solo se habilita si no hay búsqueda activa
   });
 
+  // Hook para buscar usuarios filtrados
   const {
     data: filteredUsers,
     isLoading: isLoadingFilters,
     isError: isErrorFilters,
+    refetch: refetchFilters,
   } = useSearchGithubUsers(searchQuery);
+
+  // Efecto para refetchear cuando cambia la searchQuery
+  useEffect(() => {
+    if (searchQuery) {
+      refetchFilters();
+    }
+  }, [searchQuery, refetchFilters]);
 
   return (
     <>
@@ -49,18 +59,27 @@ export default function Home() {
         className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}
       >
         <div>
-          <Searcher onSearch={(query) => setSearchQuery(query)} />
+          {/* Componente de búsqueda */}
+          <Searcher
+            onSearch={(query) => setSearchQuery(query)}
+            onClear={() => setSearchQuery("")}
+          />
         </div>
-        {(isLoadingList || isErrorFilters) && <h1>Cargando datos...</h1>}
-        {!(isLoadingList || isErrorFilters) &&
-          (isErrorList || isErrorFilters) && (
-            <h1>Error al obtener los usuarios</h1>
-          )}
-        {!(isLoadingList || isErrorFilters) &&
-          !(isErrorList || isErrorFilters) &&
-          filteredUsers && (
+
+        {(isLoadingList || isLoadingFilters) && <h1>Cargando datos...</h1>}
+
+        {/* Mostrar error si lo hay */}
+        {(isErrorList || isErrorFilters) && (
+          <h1>Error al obtener los usuarios</h1>
+        )}
+
+        {/* Mostrar la lista de usuarios, completa o filtrada */}
+        {!isLoadingList &&
+          !isLoadingFilters &&
+          !isErrorList &&
+          !isErrorFilters && (
             <main className={styles.main}>
-              {usersData?.map((user) => (
+              {(searchQuery ? filteredUsers : usersData)?.map((user) => (
                 <UserCard key={user.id} user={user} />
               ))}
             </main>

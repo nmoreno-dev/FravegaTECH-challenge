@@ -1,0 +1,32 @@
+.container {
+  margin: auto;
+  max-width: 650px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.input {
+  padding: 10px;
+  font-size: 1.25rem;
+  flex-grow: 1;
+  border-radius: 10px;
+  border: 1px solid white;
+}
+
+.clearBTN {
+  position: absolute;
+  right: 20px;
+  top: 16px;
+  background-color: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0;
+  color: white;
+}
+
+.clearBTN:hover {
+  color: rgba(255, 255, 255, 0.6);
+}
