@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  max-width: 300px;
+  max-width: 275px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -12,8 +12,22 @@
 
 .container:hover {
   cursor: pointer;
+  background-color: slategray;
+  -webkit-transition: background-color 0.2s ease-in-out;
+  -ms-transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .profilePicture {
   border-radius: 99999px;
+}
+
+.userNameContainer {
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+.userName {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

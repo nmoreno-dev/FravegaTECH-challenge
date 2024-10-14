@@ -12,8 +12,8 @@ const UserCard = ({ user }: { user: GitHubUser }) => {
         width={50}
         height={50}
       />
-      <div>
-        <h2>{user.login}</h2>
+      <div className={styles.userNameContainer}>
+        <h3 className={styles.userName}>{user.login}</h3>
       </div>
     </div>
   );
