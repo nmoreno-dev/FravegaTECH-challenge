@@ -1,0 +1,18 @@
+.container {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background-color: lime;
+}
+
+.container:hover {
+  cursor: pointer;
+}
+
+.profilePicture {
+  border-radius: 99999px;
+}
