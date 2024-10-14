@@ -21,8 +21,8 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
         <h1>GitHub Users API</h1>
       </header>
       {children}
-      <footer>
-        <h1>Made with love by Nahuel Moreno</h1>
+      <footer className={styles.footer}>
+        <p>Made with love ❤️ by Nahuel Moreno</p>
       </footer>
     </div>
   );
