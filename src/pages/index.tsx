@@ -1,8 +1,13 @@
 import Head from "next/head";
 import localFont from "next/font/local";
 import styles from "@/styles/Home.module.css";
-import { useGetGithubUsers } from "../querys/useGitHubUsers.query";
+import {
+  useListGithubUsers,
+  useSearchGithubUsers,
+} from "../querys/useGitHubUsers.query";
 import UserCard from "../components/UserCard";
+import Searcher from "../components/Search";
+import { useState } from "react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -16,7 +21,21 @@ const geistMono = localFont({
 });
 
 export default function Home() {
-  const { data: usersRequest, isLoading, isError } = useGetGithubUsers();
+  const [searchQuery, setSearchQuery] = useState<string>();
+
+  const {
+    data: usersData,
+    isLoading: isLoadingList,
+    isError: isErrorList,
+  } = useListGithubUsers({
+    enabled: !searchQuery,
+  });
+
+  const {
+    data: filteredUsers,
+    isLoading: isLoadingFilters,
+    isError: isErrorFilters,
+  } = useSearchGithubUsers(searchQuery);
 
   return (
     <>
@@ -29,15 +48,23 @@ export default function Home() {
       <div
         className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}
       >
-        {isLoading && <h1>Cargando datos...</h1>}
-        {!isLoading && isError && <h1>Error al obtener los usuarios</h1>}
-        {!isLoading && !isError && (
-          <main className={styles.main}>
-            {usersRequest?.data.map((user) => (
-              <UserCard key={user.id} user={user} />
-            ))}
-          </main>
-        )}
+        <div>
+          <Searcher onSearch={(query) => setSearchQuery(query)} />
+        </div>
+        {(isLoadingList || isErrorFilters) && <h1>Cargando datos...</h1>}
+        {!(isLoadingList || isErrorFilters) &&
+          (isErrorList || isErrorFilters) && (
+            <h1>Error al obtener los usuarios</h1>
+          )}
+        {!(isLoadingList || isErrorFilters) &&
+          !(isErrorList || isErrorFilters) &&
+          filteredUsers && (
+            <main className={styles.main}>
+              {usersData?.map((user) => (
+                <UserCard key={user.id} user={user} />
+              ))}
+            </main>
+          )}
       </div>
     </>
   );

@@ -1,22 +1,37 @@
 import gitHubApi from "../config/gitHubAPI.config";
-import { GitHubUser } from "../interfaces/gitHubUser.interface";
+import { GitHubUser, SearchResponse } from "../interfaces/gitHubUser.interface";
 
-async function getUsers(query?: string) {
+async function listUsers() {
   try {
-    const queryParams = query ? `q=${query}` : "";
+    const response = await gitHubApi.get<GitHubUser[]>("/users?per_page=100");
 
-    const response = await gitHubApi.get<GitHubUser[]>(
-      `/users?per_page=100&page=4&${queryParams}`
+    if (response && response.data) {
+      return response.data;
+    }
+
+    return [];
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function searchUsers(query: string) {
+  try {
+    const response = await gitHubApi.get<SearchResponse<GitHubUser>>(
+      `/search/users?per_page=100&q=${query}`
     );
 
     if (response && response.data) {
-      return response;
+      return response.data.items;
     }
+
+    return [];
   } catch (error) {
     console.error(error);
   }
 }
 
 export default {
-  getUsers,
+  listUsers,
+  searchUsers,
 };

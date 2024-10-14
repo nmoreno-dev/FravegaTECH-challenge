@@ -18,3 +18,9 @@ export interface GitHubUser {
   type: string;
   site_admin: boolean;
 }
+
+export interface SearchResponse<T> {
+  total_count: number;
+  incomplete_results: boolean;
+  items: T[];
+}
