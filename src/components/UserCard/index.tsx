@@ -4,9 +4,32 @@ import styles from "./styles.module.css";
 import Link from "next/link";
 import { useFavorites } from "../../store/favorites.store";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/16/solid";
+import { Avatar, Box, Card, CardContent, Typography } from "@mui/material";
 
 const UserCard = ({ user }: { user: GitHubUserListItem }) => {
   const { favorites } = useFavorites((state) => state);
+
+  return (
+    <Card>
+      <CardContent>
+        <Box
+          display={"flex"}
+          alignItems={"center"}
+          gap={2}
+          flexGrow={1}
+          width={"275px"}
+        >
+          <Avatar
+            src={user.avatar_url}
+            sx={{ height: "70px", width: "70px" }}
+          />
+          <Typography variant="h3" fontSize={"2rem"}>
+            {user.login}
+          </Typography>
+        </Box>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <Link
