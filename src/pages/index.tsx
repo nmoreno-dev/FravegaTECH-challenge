@@ -21,7 +21,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <div>
+        <div className={styles.serachBar}>
           {/* Componente de búsqueda */}
           <Searcher className={styles.searchContainer} />
         </div>

@@ -4,6 +4,7 @@ import debounce from "lodash.debounce";
 import styles from "./styles.module.css";
 import { useSearchGithubUsers } from "../../querys/useGitHubUsers.query";
 import SearchResults from "../SearchResults";
+import { queryClient } from "../../config/queryClient.config";
 
 interface SearcherProps {
   className?: string;
@@ -37,6 +38,7 @@ const Searcher: React.FC<SearcherProps> = ({ className }) => {
   };
 
   const handleClear = () => {
+    queryClient.removeQueries({ queryKey: ["gitHubFilteredUsers"] });
     setSearchQuery("");
   };
 
@@ -73,8 +75,10 @@ const Searcher: React.FC<SearcherProps> = ({ className }) => {
         )}
       </form>
       {searchQuery && !isLoadingFilters && !isErrorFilters && filteredUsers && (
-        <div className={styles.resultsContainer}>
-          <SearchResults data={filteredUsers} />
+        <div className={styles.resultsOutterContaienr}>
+          <div className={styles.resultsContainer}>
+            <SearchResults data={filteredUsers} />
+          </div>
         </div>
       )}
     </div>
