@@ -1,5 +1,6 @@
 import gitHubApi from "../config/gitHubAPI.config";
 import {
+  GitHubUser,
   GitHubUserItemList,
   SearchResponse,
 } from "../interfaces/gitHubUser.interface";
@@ -38,7 +39,7 @@ async function searchUsers(query: string) {
 
 async function getUserByUserName(userName: string) {
   try {
-    const response = await gitHubApi.get(`/users/${userName}`);
+    const response = await gitHubApi.get<GitHubUser>(`/users/${userName}`);
 
     if (response && response.data) {
       console.log(response.data);

@@ -6,6 +6,7 @@ export const useListGithubUsers = (options?: { enabled?: boolean }) =>
     queryKey: ["gitHubUsers"],
     queryFn: () => gitHubUsersService.listUsers(),
     enabled: options?.enabled,
+    staleTime: Infinity,
   });
 
 export const useSearchGithubUsers = (query?: string) =>

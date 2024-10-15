@@ -64,7 +64,8 @@ export default function Home() {
         {!isLoadingList &&
           !isLoadingFilters &&
           !isErrorList &&
-          !isErrorFilters && (
+          !isErrorFilters &&
+          (filteredUsers || usersData) && (
             <main className={styles.main}>
               {(searchQuery ? filteredUsers : usersData)?.map((user) => (
                 <UserCard key={user.id} user={user} />
