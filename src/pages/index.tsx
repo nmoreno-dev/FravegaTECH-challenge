@@ -1,5 +1,4 @@
 import Head from "next/head";
-import styles from "@/styles/Home.module.css";
 import { useListGithubUsers } from "../querys/useGitHubUsers.query";
 import UserCard from "../components/UserCard";
 import Searcher from "../components/Search";

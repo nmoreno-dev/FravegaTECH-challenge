@@ -1,25 +1,12 @@
-import cn from "classnames";
 import { useCallback, useEffect, useState } from "react";
 import debounce from "lodash.debounce";
-import styles from "./styles.module.css";
 import { useSearchGithubUsers } from "../../querys/useGitHubUsers.query";
 import SearchResults from "../SearchResults";
 import { queryClient } from "../../config/queryClient.config";
-import {
-  Box,
-  Container,
-  IconButton,
-  InputAdornment,
-  TextField,
-} from "@mui/material";
-import { XCircleIcon } from "@heroicons/react/24/outline";
+import { Box, IconButton, InputAdornment, TextField } from "@mui/material";
 import { XMarkIcon } from "@heroicons/react/16/solid";
 
-interface SearcherProps {
-  className?: string;
-}
-
-const Searcher: React.FC<SearcherProps> = ({ className }) => {
+const Searcher: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Hook para buscar usuarios filtrados
@@ -97,43 +84,6 @@ const Searcher: React.FC<SearcherProps> = ({ className }) => {
           filteredUsers && <SearchResults data={filteredUsers} />}
       </Box>
     </Box>
-  );
-
-  return (
-    <div className={styles.outterContainer}>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-        className={cn(styles.container, className)}
-      >
-        <input
-          id="query"
-          name="query"
-          type="text"
-          value={searchQuery} // Aseguramos que el valor del input esté controlado
-          onChange={handleChange}
-          placeholder="Ingresa el nombre del usuario"
-          className={styles.input}
-        />
-        {searchQuery && (
-          <button
-            type="button"
-            onClick={handleClear}
-            className={styles.clearBTN}
-          >
-            ✕
-          </button>
-        )}
-      </form>
-      {searchQuery && !isLoadingFilters && !isErrorFilters && filteredUsers && (
-        <div className={styles.resultsOutterContaienr}>
-          <div className={styles.resultsContainer}>
-            <SearchResults data={filteredUsers} />
-          </div>
-        </div>
-      )}
-    </div>
   );
 };
 

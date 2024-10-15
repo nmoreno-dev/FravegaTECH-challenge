@@ -1,10 +1,7 @@
 import { GitHubUserListItem } from "@/interfaces/gitHubUser.interface";
 import Link from "next/link";
 import { useFavorites } from "../../store/favorites.store";
-import {
-  EllipsisVerticalIcon,
-  HeartIcon as HeartIconSolid,
-} from "@heroicons/react/16/solid";
+import { HeartIcon as HeartIconSolid } from "@heroicons/react/16/solid";
 import {
   Card,
   CardActions,
