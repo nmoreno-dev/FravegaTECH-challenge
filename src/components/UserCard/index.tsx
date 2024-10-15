@@ -14,7 +14,6 @@ const UserCard = ({ user }: { user: GitHubUserListItem }) => {
           display={"flex"}
           alignItems={"center"}
           gap={2}
-          flexGrow={1}
           width={"300px"}
           padding={"10px"}
         >
@@ -22,14 +21,8 @@ const UserCard = ({ user }: { user: GitHubUserListItem }) => {
             src={user.avatar_url}
             sx={{ height: "70px", width: "70px" }}
           />
-          <Box
-            display={"flex"}
-            alignItems={"center"}
-            gap={2}
-            flexGrow={1}
-            width={"10rem"}
-          >
-            <Typography variant="h5" fontSize={"2rem"} noWrap>
+          <Box display={"flex"} alignItems={"center"} gap={2}>
+            <Typography variant="h2" fontSize={"1.3rem"} noWrap>
               {user.login}
             </Typography>
             {favorites.some((element) => element.id === user.id) && (
