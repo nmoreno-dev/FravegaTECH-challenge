@@ -1,0 +1,9 @@
+.nameContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.favicon:hover {
+  cursor: pointer;
+}

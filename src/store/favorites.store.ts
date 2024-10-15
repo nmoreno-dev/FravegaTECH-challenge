@@ -1,9 +1,9 @@
 import { create } from "zustand";
 
 interface FavoritesState {
-  favorites: { id: string }[];
-  addToFavorites: (id: string) => void;
-  removeFromFavorites: (id: string) => void;
+  favorites: { id: number }[];
+  addToFavorites: (id: number) => void;
+  removeFromFavorites: (id: number) => void;
 }
 
 export const useFavorites = create<FavoritesState>()((set) => ({

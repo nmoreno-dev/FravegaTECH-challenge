@@ -1,7 +1,12 @@
 import { useRouter } from "next/router";
 import { useGetUserByUserName } from "../../querys/useGitHubUsers.query";
 import Image from "next/image";
-
+import { useFavorites } from "../../store/favorites.store";
+import { HeartIcon as HeartIconOutline } from "@heroicons/react/24/outline";
+import { HeartIcon as HeartIconSolid } from "@heroicons/react/16/solid";
+import styles from "./styles.module.css";
+import { useEffect } from "react";
+import { queryClient } from "../../config/queryClient.config";
 const User = () => {
   const router = useRouter();
 
@@ -10,6 +15,13 @@ const User = () => {
     isLoading: isUserLoadin,
     isError: isUserError,
   } = useGetUserByUserName(router.query.userName as string);
+  const { addToFavorites, removeFromFavorites, favorites } = useFavorites(
+    (state) => state
+  );
+
+  useEffect(() => {
+    return () => queryClient.removeQueries({ queryKey: ["gitHubUser"] });
+  }, []);
 
   return (
     <main>
@@ -23,7 +35,26 @@ const User = () => {
               alt={user.name}
             />
             <div>
-              <h1>{user.name}</h1>
+              <div className={styles.nameContainer}>
+                <h1>{user.name}</h1>
+                {favorites.some((element) => element.id === user.id) ? (
+                  <HeartIconSolid
+                    color="crimson"
+                    className={styles.favicon}
+                    width={40}
+                    height={40}
+                    onClick={() => removeFromFavorites(user.id)}
+                  />
+                ) : (
+                  <HeartIconOutline
+                    color="crimson"
+                    className={styles.favicon}
+                    width={40}
+                    height={40}
+                    onClick={() => addToFavorites(user.id)}
+                  />
+                )}
+              </div>
               <p>{user.login}</p>
             </div>
           </div>

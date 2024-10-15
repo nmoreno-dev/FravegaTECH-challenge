@@ -27,6 +27,9 @@
 }
 
 .userNameContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   overflow: hidden;
   flex-grow: 1;
 }
