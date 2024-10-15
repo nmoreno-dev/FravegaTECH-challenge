@@ -10,25 +10,37 @@ const UserCard = ({ user }: { user: GitHubUserListItem }) => {
   const { favorites } = useFavorites((state) => state);
 
   return (
-    <Card>
-      <CardContent>
-        <Box
-          display={"flex"}
-          alignItems={"center"}
-          gap={2}
-          flexGrow={1}
-          width={"275px"}
-        >
-          <Avatar
-            src={user.avatar_url}
-            sx={{ height: "70px", width: "70px" }}
-          />
-          <Typography variant="h3" fontSize={"2rem"}>
-            {user.login}
-          </Typography>
-        </Box>
-      </CardContent>
-    </Card>
+    <Link href={`/users/${user.login}`}>
+      <Card>
+        <CardContent>
+          <Box
+            display={"flex"}
+            alignItems={"center"}
+            gap={2}
+            flexGrow={1}
+            width={"275px"}
+          >
+            <Avatar
+              src={user.avatar_url}
+              sx={{ height: "70px", width: "70px" }}
+            />
+            <Box display={"flex"} alignItems={"center"} gap={2} flexGrow={1}>
+              <Typography variant="h3" fontSize={"2rem"}>
+                {user.login}
+              </Typography>
+              {favorites.some((element) => element.id === user.id) && (
+                <HeartIconSolid
+                  color="crimson"
+                  className={styles.favicon}
+                  width={40}
+                  height={40}
+                />
+              )}
+            </Box>
+          </Box>
+        </CardContent>
+      </Card>
+    </Link>
   );
 
   return (
