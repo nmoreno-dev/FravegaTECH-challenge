@@ -4,42 +4,47 @@ import styles from "./styles.module.css";
 import Link from "next/link";
 import { useFavorites } from "../../store/favorites.store";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/16/solid";
-import { Avatar, Box, Card, CardContent, Typography } from "@mui/material";
+import { Avatar, Box, Paper, Typography } from "@mui/material";
 
 const UserCard = ({ user }: { user: GitHubUserListItem }) => {
   const { favorites } = useFavorites((state) => state);
 
   return (
     <Link href={`/users/${user.login}`}>
-      <Card>
-        <CardContent>
+      <Paper>
+        <Box
+          display={"flex"}
+          alignItems={"center"}
+          gap={2}
+          flexGrow={1}
+          width={"300px"}
+          padding={"10px"}
+        >
+          <Avatar
+            src={user.avatar_url}
+            sx={{ height: "70px", width: "70px" }}
+          />
           <Box
             display={"flex"}
             alignItems={"center"}
             gap={2}
             flexGrow={1}
-            width={"275px"}
+            width={"10rem"}
           >
-            <Avatar
-              src={user.avatar_url}
-              sx={{ height: "70px", width: "70px" }}
-            />
-            <Box display={"flex"} alignItems={"center"} gap={2} flexGrow={1}>
-              <Typography variant="h3" fontSize={"2rem"}>
-                {user.login}
-              </Typography>
-              {favorites.some((element) => element.id === user.id) && (
-                <HeartIconSolid
-                  color="crimson"
-                  className={styles.favicon}
-                  width={40}
-                  height={40}
-                />
-              )}
-            </Box>
+            <Typography variant="h5" fontSize={"2rem"} noWrap>
+              {user.login}
+            </Typography>
+            {favorites.some((element) => element.id === user.id) && (
+              <HeartIconSolid
+                color="crimson"
+                className={styles.favicon}
+                width={40}
+                height={40}
+              />
+            )}
           </Box>
-        </CardContent>
-      </Card>
+        </Box>
+      </Paper>
     </Link>
   );
 
