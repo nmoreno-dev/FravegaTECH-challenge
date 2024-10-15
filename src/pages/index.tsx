@@ -3,6 +3,7 @@ import styles from "@/styles/Home.module.css";
 import { useListGithubUsers } from "../querys/useGitHubUsers.query";
 import UserCard from "../components/UserCard";
 import Searcher from "../components/Search";
+import { Box } from "@mui/material";
 
 export default function Home() {
   // Hook para listar todos los usuarios si no hay búsqueda activa
@@ -21,10 +22,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <div className={styles.serachBar}>
-          {/* Componente de búsqueda */}
-          <Searcher className={styles.searchContainer} />
-        </div>
+        <Searcher />
 
         {isLoadingList && <h1>Cargando datos...</h1>}
 
@@ -33,10 +31,17 @@ export default function Home() {
 
         {/* Mostrar la lista de usuarios, completa o filtrada */}
         {!isLoadingList && !isErrorList && usersData && (
-          <main className={styles.main}>
-            {usersData.map((user) => (
-              <UserCard key={user.id} user={user} />
-            ))}
+          <main>
+            <Box
+              display={"flex"}
+              flexWrap={"wrap"}
+              gap={2}
+              justifyContent={"space-evenly"}
+            >
+              {usersData.map((user) => (
+                <UserCard key={user.id} user={user} />
+              ))}
+            </Box>
           </main>
         )}
       </div>

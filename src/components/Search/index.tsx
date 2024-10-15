@@ -5,6 +5,15 @@ import styles from "./styles.module.css";
 import { useSearchGithubUsers } from "../../querys/useGitHubUsers.query";
 import SearchResults from "../SearchResults";
 import { queryClient } from "../../config/queryClient.config";
+import {
+  Box,
+  Container,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
+import { XCircleIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/16/solid";
 
 interface SearcherProps {
   className?: string;
@@ -47,6 +56,49 @@ const Searcher: React.FC<SearcherProps> = ({ className }) => {
       debouncedSearch.cancel();
     };
   }, [debouncedSearch]);
+
+  return (
+    <Box
+      width={"100vw"}
+      display={"flex"}
+      justifyContent={"center"}
+      padding={"20px"}
+    >
+      <Box
+        maxWidth={"650px"}
+        flexGrow={1}
+        display={"flex"}
+        flexDirection={"column"}
+        justifyContent={"center"}
+        position={"relative"}
+      >
+        <TextField
+          variant="outlined"
+          label="Search by user name"
+          placeholder="Start typing..."
+          fullWidth
+          onChange={handleChange}
+          value={searchQuery}
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleClear}>
+                    <XMarkIcon width={25} height={25} />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
+          }}
+        />
+        {searchQuery &&
+          !isLoadingFilters &&
+          !isErrorFilters &&
+          filteredUsers && <SearchResults data={filteredUsers} />}
+      </Box>
+    </Box>
+  );
+
   return (
     <div className={styles.outterContainer}>
       <form

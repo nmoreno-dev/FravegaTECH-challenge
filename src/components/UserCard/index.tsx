@@ -1,37 +1,80 @@
 import { GitHubUserListItem } from "@/interfaces/gitHubUser.interface";
 import Link from "next/link";
 import { useFavorites } from "../../store/favorites.store";
-import { HeartIcon as HeartIconSolid } from "@heroicons/react/16/solid";
-import { Avatar, Box, Paper, Typography } from "@mui/material";
+import {
+  EllipsisVerticalIcon,
+  HeartIcon as HeartIconSolid,
+} from "@heroicons/react/16/solid";
+import {
+  Avatar,
+  Box,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import { HeartIcon } from "@heroicons/react/24/outline";
 
 const UserCard = ({ user }: { user: GitHubUserListItem }) => {
-  const { favorites } = useFavorites((state) => state);
+  const { favorites, addToFavorites, removeFromFavorites } = useFavorites(
+    (state) => state
+  );
 
   return (
-    <Link href={`/users/${user.login}`}>
-      <Paper>
-        <Box
-          display={"flex"}
-          alignItems={"center"}
-          gap={2}
-          width={"300px"}
-          padding={"10px"}
-        >
-          <Avatar
-            src={user.avatar_url}
-            sx={{ height: "70px", width: "70px" }}
-          />
-          <Box display={"flex"} alignItems={"center"} gap={2}>
-            <Typography variant="h2" fontSize={"1.3rem"} noWrap>
+    <Card
+      sx={{
+        width: "275px",
+      }}
+    >
+      <CardHeader
+        action={
+          <IconButton>
+            <EllipsisVerticalIcon width={20} height={20} color="black" />
+          </IconButton>
+        }
+        title={
+          <Link href={`/users/${user.login}`}>
+            <Typography variant="h2" fontSize={"1.3rem"}>
               {user.login}
             </Typography>
-            {favorites.some((element) => element.id === user.id) && (
-              <HeartIconSolid color="crimson" width={40} height={40} />
-            )}
-          </Box>
-        </Box>
-      </Paper>
-    </Link>
+          </Link>
+        }
+      />
+      <CardContent>
+        <Link href={`/users/${user.login}`}>
+          <CardMedia
+            component="img"
+            image={user.avatar_url}
+            width={100}
+            sx={{
+              objectFit: "contain",
+            }}
+          />
+        </Link>
+      </CardContent>
+      <CardActions>
+        <IconButton>
+          {favorites.some((element) => element.id === user.id) ? (
+            <HeartIconSolid
+              color="crimson"
+              width={40}
+              height={40}
+              onClick={() => removeFromFavorites(user.id)}
+            />
+          ) : (
+            <HeartIcon
+              color="crimson"
+              width={40}
+              height={40}
+              onClick={() => addToFavorites(user.id)}
+            />
+          )}
+        </IconButton>
+      </CardActions>
+    </Card>
   );
 };
 

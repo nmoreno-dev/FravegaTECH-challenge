@@ -1,12 +1,6 @@
 import { PropsWithChildren } from "react";
 import styles from "./styles.module.css";
-import {
-  AppBar,
-  Container,
-  CssBaseline,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { AppBar, Box, CssBaseline, Toolbar, Typography } from "@mui/material";
 
 const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -17,7 +11,7 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
           <Typography variant="h3">GitHub Users API</Typography>
         </Toolbar>
       </AppBar>
-      <Container>{children}</Container>
+      <Box>{children}</Box>
       <footer className={styles.footer}>
         <p>Made with love ❤️ by Nahuel Moreno</p>
       </footer>
