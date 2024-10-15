@@ -6,8 +6,6 @@ import {
   HeartIcon as HeartIconSolid,
 } from "@heroicons/react/16/solid";
 import {
-  Avatar,
-  Box,
   Card,
   CardActions,
   CardContent,
@@ -26,29 +24,35 @@ const UserCard = ({ user }: { user: GitHubUserListItem }) => {
   return (
     <Card
       sx={{
-        width: "275px",
+        width: "200px",
       }}
     >
       <CardHeader
-        action={
-          <IconButton>
-            <EllipsisVerticalIcon width={20} height={20} color="black" />
-          </IconButton>
-        }
         title={
           <Link href={`/users/${user.login}`}>
-            <Typography variant="h2" fontSize={"1.3rem"}>
+            <Typography variant="h2" fontSize={"1.3rem"} noWrap>
               {user.login}
             </Typography>
           </Link>
         }
+        sx={{
+          paddingBottom: 0,
+          display: "flex",
+          overflow: "hidden",
+          "& .MuiCardHeader-content": {
+            overflow: "hidden",
+          },
+        }}
       />
-      <CardContent>
+      <CardContent
+        sx={{
+          paddingBottom: 0,
+        }}
+      >
         <Link href={`/users/${user.login}`}>
           <CardMedia
             component="img"
             image={user.avatar_url}
-            width={100}
             sx={{
               objectFit: "contain",
             }}
