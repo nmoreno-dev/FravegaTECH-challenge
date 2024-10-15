@@ -1,11 +1,10 @@
 "use client";
 
-import React, { PropsWithChildren, useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React, { PropsWithChildren } from "react";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "../../config/queryClient.config";
 
 const Providers: React.FC<PropsWithChildren> = ({ children }) => {
-  const [queryClient] = useState(() => new QueryClient());
-
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );

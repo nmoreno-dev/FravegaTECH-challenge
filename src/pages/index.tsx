@@ -1,39 +1,16 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
-import {
-  useListGithubUsers,
-  useSearchGithubUsers,
-} from "../querys/useGitHubUsers.query";
+import { useListGithubUsers } from "../querys/useGitHubUsers.query";
 import UserCard from "../components/UserCard";
 import Searcher from "../components/Search";
-import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [searchQuery, setSearchQuery] = useState<string>("");
-
   // Hook para listar todos los usuarios si no hay búsqueda activa
   const {
     data: usersData,
     isLoading: isLoadingList,
     isError: isErrorList,
-  } = useListGithubUsers({
-    enabled: !searchQuery, // Solo se habilita si no hay búsqueda activa
-  });
-
-  // Hook para buscar usuarios filtrados
-  const {
-    data: filteredUsers,
-    isLoading: isLoadingFilters,
-    isError: isErrorFilters,
-    refetch: refetchFilters,
-  } = useSearchGithubUsers(searchQuery);
-
-  // Efecto para refetchear cuando cambia la searchQuery
-  useEffect(() => {
-    if (searchQuery) {
-      refetchFilters();
-    }
-  }, [searchQuery, refetchFilters]);
+  } = useListGithubUsers();
 
   return (
     <>
@@ -46,32 +23,22 @@ export default function Home() {
       <div>
         <div>
           {/* Componente de búsqueda */}
-          <Searcher
-            onSearch={(query) => setSearchQuery(query)}
-            onClear={() => setSearchQuery("")}
-            className={styles.searchContainer}
-          />
+          <Searcher className={styles.searchContainer} />
         </div>
 
-        {(isLoadingList || isLoadingFilters) && <h1>Cargando datos...</h1>}
+        {isLoadingList && <h1>Cargando datos...</h1>}
 
         {/* Mostrar error si lo hay */}
-        {(isErrorList || isErrorFilters) && (
-          <h1>Error al obtener los usuarios</h1>
-        )}
+        {isErrorList && <h1>Error al obtener los usuarios</h1>}
 
         {/* Mostrar la lista de usuarios, completa o filtrada */}
-        {!isLoadingList &&
-          !isLoadingFilters &&
-          !isErrorList &&
-          !isErrorFilters &&
-          (filteredUsers || usersData) && (
-            <main className={styles.main}>
-              {(searchQuery ? filteredUsers : usersData)?.map((user) => (
-                <UserCard key={user.id} user={user} />
-              ))}
-            </main>
-          )}
+        {!isLoadingList && !isErrorList && usersData && (
+          <main className={styles.main}>
+            {usersData.map((user) => (
+              <UserCard key={user.id} user={user} />
+            ))}
+          </main>
+        )}
       </div>
     </>
   );

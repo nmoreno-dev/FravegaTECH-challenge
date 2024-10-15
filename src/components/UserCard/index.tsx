@@ -1,9 +1,9 @@
-import { GitHubUserItemList } from "@/interfaces/gitHubUser.interface";
+import { GitHubUserListItem } from "@/interfaces/gitHubUser.interface";
 import Image from "next/image";
 import styles from "./styles.module.css";
 import Link from "next/link";
 
-const UserCard = ({ user }: { user: GitHubUserItemList }) => {
+const UserCard = ({ user }: { user: GitHubUserListItem }) => {
   return (
     <Link
       href={`/users/${user.login}`}

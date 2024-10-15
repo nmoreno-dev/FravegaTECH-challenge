@@ -1,68 +1,83 @@
 import cn from "classnames";
-import { useRef, useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import debounce from "lodash.debounce";
 import styles from "./styles.module.css";
+import { useSearchGithubUsers } from "../../querys/useGitHubUsers.query";
+import SearchResults from "../SearchResults";
 
 interface SearcherProps {
-  onSearch: (query: string) => void;
-  onClear: () => void;
   className?: string;
 }
 
-const Searcher: React.FC<SearcherProps> = ({
-  onSearch,
-  onClear,
-  className,
-}) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [hasValue, setHasValue] = useState(false); // Controla si el input tiene algún valor
+const Searcher: React.FC<SearcherProps> = ({ className }) => {
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
-  // Función debounced
+  // Hook para buscar usuarios filtrados
+  const {
+    data: filteredUsers,
+    isLoading: isLoadingFilters,
+    isError: isErrorFilters,
+    refetch: refetchFilters,
+  } = useSearchGithubUsers(searchQuery, { enabled: false });
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSearch = useCallback(
-    debounce((value: string) => {
-      onSearch(value);
-    }, 300),
-    [onSearch]
+    debounce((value) => {
+      if (value) {
+        refetchFilters();
+      }
+    }, 1000),
+    [refetchFilters]
   );
 
-  const handleChange = () => {
-    if (inputRef.current) {
-      const value = inputRef.current.value;
-      setHasValue(value.length > 0); // Actualiza el estado del botón clear
-      debouncedSearch(value);
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    debouncedSearch(value);
   };
 
   const handleClear = () => {
-    if (inputRef.current) {
-      inputRef.current.value = ""; // Limpiar el input manualmente
-      setHasValue(false); // Oculta el botón clear
-      onClear(); // Llamar a la función onClear
-    }
+    setSearchQuery("");
   };
 
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-      }}
-      className={cn(styles.container, className)}
-    >
-      <input
-        id="query"
-        name="query"
-        type="text"
-        ref={inputRef}
-        onChange={handleChange}
-        placeholder="Ingresa el nombre del usuario"
-        className={styles.input}
-      />
-      {hasValue && (
-        <button type="button" onClick={handleClear} className={styles.clearBTN}>
-          ✕
-        </button>
+    <div className={styles.outterContainer}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
+        className={cn(styles.container, className)}
+      >
+        <input
+          id="query"
+          name="query"
+          type="text"
+          value={searchQuery} // Aseguramos que el valor del input esté controlado
+          onChange={handleChange}
+          placeholder="Ingresa el nombre del usuario"
+          className={styles.input}
+        />
+        {searchQuery && (
+          <button
+            type="button"
+            onClick={handleClear}
+            className={styles.clearBTN}
+          >
+            ✕
+          </button>
+        )}
+      </form>
+      {searchQuery && !isLoadingFilters && !isErrorFilters && filteredUsers && (
+        <div className={styles.resultsContainer}>
+          <SearchResults data={filteredUsers} />
+        </div>
       )}
-    </form>
+    </div>
   );
 };
 

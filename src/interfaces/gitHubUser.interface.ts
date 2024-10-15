@@ -1,4 +1,4 @@
-export interface GitHubUserItemList {
+export interface GitHubUserListItem {
   login: string;
   id: number;
   node_id: string;
