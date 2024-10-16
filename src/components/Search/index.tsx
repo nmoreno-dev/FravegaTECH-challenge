@@ -23,7 +23,7 @@ const Searcher: React.FC = () => {
       if (value) {
         refetchFilters();
       }
-    }, 1000),
+    }, 300),
     [refetchFilters]
   );
 
