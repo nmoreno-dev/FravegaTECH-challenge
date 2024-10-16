@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, memo } from "react";
 import debounce from "lodash.debounce";
 import { useSearchGithubUsers } from "../../querys/useGitHubUsers.query";
 import SearchResults from "../SearchResults";
@@ -17,7 +17,6 @@ const Searcher: React.FC = () => {
     refetch: refetchFilters,
   } = useSearchGithubUsers(searchQuery, { enabled: false });
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSearch = useCallback(
     debounce((value) => {
       if (value) {
@@ -66,6 +65,7 @@ const Searcher: React.FC = () => {
           fullWidth
           onChange={handleChange}
           value={searchQuery}
+          aria-label="Search GitHub users"
           slotProps={{
             input: {
               endAdornment: (
@@ -87,4 +87,4 @@ const Searcher: React.FC = () => {
   );
 };
 
-export default Searcher;
+export default memo(Searcher);

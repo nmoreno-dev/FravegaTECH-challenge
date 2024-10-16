@@ -13,7 +13,6 @@ const SearchResults = ({ data }: SearchResultsProps) => {
         boxSizing={"border-box"}
         position={"absolute"}
         width={"100%"}
-        border={"1px solid white"}
         top={56}
         zIndex={99}
         display={"flex"}

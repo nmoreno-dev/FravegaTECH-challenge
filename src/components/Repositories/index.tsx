@@ -30,13 +30,17 @@ const Repositories = ({ repos, isError, isLoading }: RepositoriesProps) => {
       justifyContent={"space-between"}
     >
       {isError ? (
-        <Typography>Error getting repositories</Typography>
+        <Typography role="alert">Error getting repositories</Typography>
       ) : isLoading ? (
-        <Typography>Loading repositories</Typography>
+        <Typography>Loading repositories...</Typography>
       ) : repos ? (
         <Grid2 container size={12}>
           {repos.map((repo) => (
-            <Grid2 key={repo.id} size={{ xs: 12, sm: 6, md: 6, lg: 4, xl: 3 }}>
+            <Grid2
+              key={repo.id}
+              size={{ xs: 12, sm: 6, md: 6, lg: 4, xl: 3 }}
+              component="article"
+            >
               <Card sx={{ margin: 1 }}>
                 <CardHeader
                   sx={{
@@ -54,21 +58,45 @@ const Repositories = ({ repos, isError, isLoading }: RepositoriesProps) => {
                   ).toLocaleDateString("es-AR")}`}
                 />
                 <CardActions>
-                  <Tooltip title="Forks">
+                  <Tooltip
+                    title="Forks"
+                    aria-label={`${repo.forks_count} forks`}
+                  >
                     <Box display={"flex"} alignItems={"start"}>
-                      <ShareIcon width={20} height={20} />
+                      <ShareIcon
+                        width={20}
+                        height={20}
+                        aria-hidden="true"
+                        color="limeGreen"
+                      />
                       <Typography>{repo.forks_count}</Typography>
                     </Box>
                   </Tooltip>
-                  <Tooltip title="issues">
+                  <Tooltip
+                    title="Issues"
+                    aria-label={`${repo.open_issues_count} open issues`}
+                  >
                     <Box display={"flex"} alignItems={"start"}>
-                      <ExclamationCircleIcon width={20} height={20} />
+                      <ExclamationCircleIcon
+                        width={20}
+                        height={20}
+                        aria-hidden="true"
+                        color="skyBlue"
+                      />
                       <Typography>{repo.open_issues_count}</Typography>
                     </Box>
                   </Tooltip>
-                  <Tooltip title="stars">
+                  <Tooltip
+                    title="Stars"
+                    aria-label={`${repo.stargazers_count} stars`}
+                  >
                     <Box display={"flex"} alignItems={"start"}>
-                      <StarIcon width={20} height={20} />
+                      <StarIcon
+                        width={20}
+                        height={20}
+                        aria-hidden="true"
+                        color="gold"
+                      />
                       <Typography>{repo.stargazers_count}</Typography>
                     </Box>
                   </Tooltip>
@@ -78,7 +106,7 @@ const Repositories = ({ repos, isError, isLoading }: RepositoriesProps) => {
           ))}
         </Grid2>
       ) : (
-        <Typography>There&apos;s no public repos for this user</Typography>
+        <Typography>No public repositories for this user</Typography>
       )}
     </Box>
   );

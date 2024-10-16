@@ -11,15 +11,21 @@ import {
   Typography,
 } from "@mui/material";
 import { HeartIcon as HeartIconOutline } from "@heroicons/react/24/outline";
+import { memo, useMemo } from "react";
 
 const UserCard = ({ user }: { user: GitHubUserListItem }) => {
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites(
     (state) => state
   );
 
+  const isFavorite = useMemo(
+    () => favorites.some((element) => element.id === user.id),
+    [favorites, user.id]
+  );
+
   return (
     <Paper sx={{ p: 1, m: 1 }}>
-      <Link href={`/users/${user.login}`}>
+      <Link href={`/users/${user.login}`} passHref>
         <Box
           display={"flex"}
           alignItems={"center"}
@@ -33,10 +39,13 @@ const UserCard = ({ user }: { user: GitHubUserListItem }) => {
                 width: 60,
                 height: 60,
               }}
+              alt={`${user.login}'s avatar`}
             />
-            <Typography variant="h2" fontSize={"1.3rem"} noWrap>
-              {user.login}
-            </Typography>
+            <Tooltip title={user.login}>
+              <Typography variant="h2" fontSize={"1.3rem"} noWrap>
+                {user.login}
+              </Typography>
+            </Tooltip>
           </Box>
           <Tooltip
             title={
@@ -46,7 +55,7 @@ const UserCard = ({ user }: { user: GitHubUserListItem }) => {
             }
           >
             <IconButton>
-              {favorites.some((element) => element.id === user.id) ? (
+              {isFavorite ? (
                 <HeartIconSolid
                   color="crimson"
                   width={30}
@@ -75,4 +84,4 @@ const UserCard = ({ user }: { user: GitHubUserListItem }) => {
   );
 };
 
-export default UserCard;
+export default memo(UserCard);
