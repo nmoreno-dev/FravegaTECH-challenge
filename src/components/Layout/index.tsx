@@ -1,12 +1,32 @@
 import { PropsWithChildren } from "react";
-import { AppBar, Box, CssBaseline, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  CssBaseline,
+  IconButton,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { ArrowLeftIcon } from "@heroicons/react/16/solid";
+import { useRouter } from "next/router";
 
 const Layout: React.FC<PropsWithChildren> = ({ children }) => {
+  const router = useRouter();
+
+  const handleBackClick = () => {
+    router.back();
+  };
+
   return (
     <>
       <CssBaseline />
       <AppBar position="sticky">
         <Toolbar>
+          {router.pathname !== "/" && (
+            <IconButton onClick={handleBackClick}>
+              <ArrowLeftIcon width={40} height={40} color="white" />
+            </IconButton>
+          )}
           <Typography variant="h3">GitHub Users API</Typography>
         </Toolbar>
       </AppBar>

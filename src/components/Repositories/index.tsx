@@ -34,7 +34,7 @@ const Repositories = ({ repos, isError, isLoading }: RepositoriesProps) => {
       ) : isLoading ? (
         <Typography>Loading repositories</Typography>
       ) : repos ? (
-        <Grid2 container>
+        <Grid2 container size={12}>
           {repos.map((repo) => (
             <Grid2 key={repo.id} size={{ xs: 12, sm: 6, md: 6, lg: 4, xl: 3 }}>
               <Card sx={{ margin: 1 }}>

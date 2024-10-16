@@ -2,7 +2,11 @@ import { useRouter } from "next/router";
 import { useGetUserByUserName } from "../../querys/useGitHubUsers.query";
 import { useFavorites } from "../../store/favorites.store";
 import { HeartIcon as HeartIconOutline } from "@heroicons/react/24/outline";
-import { HeartIcon as HeartIconSolid } from "@heroicons/react/16/solid";
+import {
+  CalendarIcon,
+  HeartIcon as HeartIconSolid,
+  MapPinIcon,
+} from "@heroicons/react/16/solid";
 import { useEffect } from "react";
 import { queryClient } from "../../config/queryClient.config";
 import { useGetUserReposByUserName } from "../../querys/useGitHubUsers.query";
@@ -91,6 +95,40 @@ const User = () => {
                     )}
                   </IconButton>
                 </Tooltip>
+              </Box>
+            </Box>
+            <Box
+              sx={{ p: 1 }}
+              display={"flex"}
+              gap={1}
+              width={"100%"}
+              justifyContent={"start"}
+            >
+              <Box display={"flex"} gap={1}>
+                <MapPinIcon width={20} height={20} />{" "}
+                <Typography>{user.location ?? "N/A"}</Typography>
+              </Box>
+              <Box display={"flex"} gap={1}>
+                <CalendarIcon width={20} height={20} />{" "}
+                <Typography>
+                  {new Date(user.created_at).toLocaleDateString("es-AR")}
+                </Typography>
+              </Box>
+            </Box>
+            <Box
+              sx={{ p: 1 }}
+              display={"flex"}
+              gap={1}
+              width={"100%"}
+              justifyContent={"start"}
+            >
+              <Box display={"flex"} gap={1}>
+                <Typography fontWeight={"bold"}>{user.followers}</Typography>
+                <Typography>Followers</Typography>
+              </Box>
+              <Box display={"flex"} gap={1}>
+                <Typography fontWeight={"bold"}>{user.following}</Typography>
+                <Typography>Following</Typography>
               </Box>
             </Box>
             {user.bio && (
