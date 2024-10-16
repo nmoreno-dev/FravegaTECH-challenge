@@ -23,4 +23,12 @@ export const useGetUserByUserName = (userName: string) =>
   useQuery({
     queryKey: ["gitHubUser"],
     queryFn: () => gitHubUsersService.getUserByUserName(userName!),
+    enabled: !!userName,
+  });
+
+export const useGetUserReposByUserName = (userName?: string) =>
+  useQuery({
+    queryKey: ["userRepos"],
+    queryFn: () => gitHubUsersService.fetchUserRespositories(userName!),
+    enabled: !!userName,
   });

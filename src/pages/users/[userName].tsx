@@ -1,110 +1,176 @@
 import { useRouter } from "next/router";
 import { useGetUserByUserName } from "../../querys/useGitHubUsers.query";
-import Image from "next/image";
 import { useFavorites } from "../../store/favorites.store";
 import { HeartIcon as HeartIconOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/16/solid";
-import styles from "./styles.module.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { queryClient } from "../../config/queryClient.config";
+import { useGetUserReposByUserName } from "../../querys/useGitHubUsers.query";
+import {
+  Avatar,
+  Box,
+  Grid2,
+  Paper,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
+import RepositoriesTabPannel from "../../components/RepositoriesTabPannel";
 const User = () => {
   const router = useRouter();
 
-  const {
-    data: user,
-    isLoading: isUserLoadin,
-    isError: isUserError,
-  } = useGetUserByUserName(router.query.userName as string);
+  const [selectedTab, setSelectedTab] = useState(0);
+
   const { addToFavorites, removeFromFavorites, favorites } = useFavorites(
     (state) => state
   );
+
+  const {
+    data: user,
+    isLoading: isUserLoading,
+    isError: isUserError,
+  } = useGetUserByUserName(router.query.userName as string);
+
+  const {
+    data: userRepos,
+    isLoading: isUserReposLoading,
+    isError: isUserReposError,
+  } = useGetUserReposByUserName(user?.login);
 
   useEffect(() => {
     return () => queryClient.removeQueries({ queryKey: ["gitHubUser"] });
   }, []);
 
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setSelectedTab(newValue);
+  };
+
   return (
-    <main>
-      {!isUserLoadin && !isUserError && user && (
-        <>
-          <div>
-            <Image
-              src={user.avatar_url}
-              width={200}
-              height={200}
-              alt={user.name}
-            />
-            <div>
-              <div className={styles.nameContainer}>
-                <h1>{user.name}</h1>
-                {favorites.some((element) => element.id === user.id) ? (
-                  <HeartIconSolid
-                    color="crimson"
-                    className={styles.favicon}
-                    width={40}
-                    height={40}
-                    onClick={() => removeFromFavorites(user.id)}
-                  />
-                ) : (
-                  <HeartIconOutline
-                    color="crimson"
-                    className={styles.favicon}
-                    width={40}
-                    height={40}
-                    onClick={() => addToFavorites(user.id)}
-                  />
-                )}
-              </div>
-              <p>{user.login}</p>
+    <>
+      {!isUserLoading && !isUserError && user && (
+        <Grid2 container spacing={2} margin={"10px"}>
+          <Grid2 size={{ xs: 12, md: 3 }}>
+            <Box display={"flex"} alignItems={"center"}>
+              <Avatar
+                src={user.avatar_url}
+                sx={{
+                  width: 60,
+                  height: 60,
+                }}
+              />
+              <Box marginLeft={"10px"}>
+                <Typography variant="h1" fontSize={"1.5rem"}>
+                  {user.name}
+                </Typography>
+                <Typography variant="h3" fontSize={"1.3rem"}>
+                  {user.login}
+                </Typography>
+              </Box>
+            </Box>
+            {user.bio && (
+              <Paper>
+                <Box
+                  border={"1px solid"}
+                  borderRadius={"4px"}
+                  borderColor={"pimary.main"}
+                  padding={"10px"}
+                  marginTop={"10px"}
+                >
+                  <Typography variant="h3" fontSize={"1rem"}>
+                    {user.bio}
+                  </Typography>
+                </Box>
+              </Paper>
+            )}
+            {}
+          </Grid2>
+          <Grid2 flexDirection={"column"} size={{ xs: 12, md: 6 }}>
+            <Box
+              marginLeft={"10px"}
+              sx={{
+                maxWidth: { xs: 900 },
+              }}
+            >
+              <Tabs
+                value={selectedTab}
+                onChange={handleTabChange}
+                variant="scrollable"
+                scrollButtons="auto"
+                allowScrollButtonsMobile
+              >
+                <Tab label="Repositories" />
+                <Tab label="Projects" />
+                <Tab label="Organizations" />
+              </Tabs>
+            </Box>
+            <div
+              role="tabpanel"
+              hidden={selectedTab !== 0}
+              id={`simple-tabpanel-${0}`}
+              aria-labelledby={`simple-tab-${0}`}
+            >
+              {selectedTab === 0 && (
+                <RepositoriesTabPannel
+                  repos={userRepos}
+                  isError={isUserReposError}
+                  isLoading={isUserReposLoading}
+                />
+              )}
             </div>
-          </div>
-          <table>
-            <tbody>
-              <tr>
-                <td>Name:</td>
-                <td>{user.name}</td>
-              </tr>
-              <tr>
-                <td>Location:</td>
-                <td>{user.location ?? "N/A"}</td>
-              </tr>
-              <tr>
-                <td>Email:</td>
-                <td>{user.email ?? "N/A"}</td>
-              </tr>
-              <tr>
-                <td>Hireable:</td>
-                <td>{user.hireable ?? "N/A"}</td>
-              </tr>
-              <tr>
-                <td>Bio:</td>
-                <td>{user.bio ?? "N/A"}</td>
-              </tr>
-              <tr>
-                <td>X UserName:</td>
-                <td>{user.twitter_username ?? "N/A"}</td>
-              </tr>
-              <tr>
-                <td>Public Repos:</td>
-                <td>{user.public_repos ?? "N/A"}</td>
-              </tr>
-              <tr>
-                <td>Public Gist:</td>
-                <td>{user.public_gists ?? "N/A"}</td>
-              </tr>
-              <tr>
-                <td>Followers:</td>
-                <td>{user.followers ?? "N/A"}</td>
-              </tr>
-              <tr>
-                <td>Following:</td>
-                <td>{user.following ?? "N/A"}</td>
-              </tr>
-            </tbody>
-          </table>
-        </>
+            <div
+              role="tabpanel"
+              hidden={selectedTab !== 1}
+              id={`simple-tabpanel-${1}`}
+              aria-labelledby={`simple-tab-${1}`}
+            >
+              {selectedTab === 1 && <Box sx={{ p: 3 }}>Projects</Box>}
+            </div>
+            <div
+              role="tabpanel"
+              hidden={selectedTab !== 2}
+              id={`simple-tabpanel-${2}`}
+              aria-labelledby={`simple-tab-${2}`}
+            >
+              {selectedTab === 2 && <Box sx={{ p: 3 }}>Organizations</Box>}
+            </div>
+          </Grid2>
+          <Grid2 size={{ xs: 12, md: 3 }}>
+            <Box display={"flex"} alignItems={"center"}>
+              <Avatar
+                src={user.avatar_url}
+                sx={{
+                  width: 60,
+                  height: 60,
+                }}
+              />
+              <Box marginLeft={"10px"}>
+                <Typography variant="h1" fontSize={"1.5rem"}>
+                  {user.name}
+                </Typography>
+                <Typography variant="h3" fontSize={"1.3rem"}>
+                  {user.login}
+                </Typography>
+              </Box>
+            </Box>
+            {user.bio && (
+              <Paper>
+                <Box
+                  border={"1px solid"}
+                  borderRadius={"4px"}
+                  borderColor={"pimary.main"}
+                  padding={"10px"}
+                  marginTop={"10px"}
+                >
+                  <Typography variant="h3" fontSize={"1rem"}>
+                    {user.bio}
+                  </Typography>
+                </Box>
+              </Paper>
+            )}
+          </Grid2>
+        </Grid2>
       )}
-    </main>
+    </>
   );
 };
 

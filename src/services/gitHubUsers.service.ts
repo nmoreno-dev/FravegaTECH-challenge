@@ -1,4 +1,5 @@
 import gitHubApi from "../config/gitHubAPI.config";
+import { Repository } from "../interfaces/gitHubRepository.interface";
 import {
   GitHubUser,
   GitHubUserListItem,
@@ -43,6 +44,20 @@ async function getUserByUserName(userName: string) {
     const response = await gitHubApi.get<GitHubUser>(`/users/${userName}`);
 
     if (response && response.data) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function fetchUserRespositories(userName: string) {
+  try {
+    const response = await gitHubApi.get<Repository[]>(
+      `/users/${userName}/repos`
+    );
+
+    if (response && response.data) {
       console.log(response.data);
       return response.data;
     }
@@ -55,4 +70,5 @@ export default {
   listUsers,
   searchUsers,
   getUserByUserName,
+  fetchUserRespositories,
 };
