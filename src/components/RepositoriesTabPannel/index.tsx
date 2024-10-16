@@ -1,4 +1,11 @@
-import { Box, Card, CardActions, CardHeader, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardActions,
+  CardHeader,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { Repository } from "../../interfaces/gitHubRepository.interface";
 import {
   ExclamationCircleIcon,
@@ -49,18 +56,24 @@ const RepositoriesTabPannel = ({
               ).toLocaleDateString("es-AR")}`}
             />
             <CardActions>
-              <Box display={"flex"} gap={1} alignItems={"center"}>
-                <ShareIcon width={24} height={24} />
-                <Typography>{repo.forks_count}</Typography>
-              </Box>
-              <Box display={"flex"} gap={1} alignItems={"center"}>
-                <ExclamationCircleIcon width={24} height={24} />
-                <Typography>{repo.open_issues_count}</Typography>
-              </Box>
-              <Box display={"flex"} gap={1} alignItems={"center"}>
-                <StarIcon width={24} height={24} />
-                <Typography>{repo.stargazers_count}</Typography>
-              </Box>
+              <Tooltip title="Forks">
+                <Box display={"flex"} alignItems={"start"}>
+                  <ShareIcon width={20} height={20} />
+                  <Typography>{repo.forks_count}</Typography>
+                </Box>
+              </Tooltip>
+              <Tooltip title="issues">
+                <Box display={"flex"} alignItems={"start"}>
+                  <ExclamationCircleIcon width={20} height={20} />
+                  <Typography>{repo.open_issues_count}</Typography>
+                </Box>
+              </Tooltip>
+              <Tooltip title="stars">
+                <Box display={"flex"} alignItems={"start"}>
+                  <StarIcon width={20} height={20} />
+                  <Typography>{repo.stargazers_count}</Typography>
+                </Box>
+              </Tooltip>
             </CardActions>
           </Card>
         ))
