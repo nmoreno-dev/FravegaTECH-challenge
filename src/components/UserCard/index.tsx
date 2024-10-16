@@ -3,12 +3,10 @@ import Link from "next/link";
 import { useFavorites } from "../../store/favorites.store";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/16/solid";
 import {
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  CardMedia,
+  Avatar,
+  Box,
   IconButton,
+  Paper,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -20,71 +18,60 @@ const UserCard = ({ user }: { user: GitHubUserListItem }) => {
   );
 
   return (
-    <Card
-      sx={{
-        width: "200px",
-      }}
-    >
-      <CardHeader
-        title={
-          <Link href={`/users/${user.login}`}>
+    <Paper sx={{ p: 1, m: 1 }}>
+      <Link href={`/users/${user.login}`}>
+        <Box
+          display={"flex"}
+          alignItems={"center"}
+          justifyContent={"space-between"}
+          width={"100%"}
+        >
+          <Box display={"flex"} alignItems={"center"} gap={1} width={"80%"}>
+            <Avatar
+              src={user.avatar_url}
+              sx={{
+                width: 60,
+                height: 60,
+              }}
+            />
             <Typography variant="h2" fontSize={"1.3rem"} noWrap>
               {user.login}
             </Typography>
-          </Link>
-        }
-        sx={{
-          paddingBottom: 0,
-          display: "flex",
-          overflow: "hidden",
-          "& .MuiCardHeader-content": {
-            overflow: "hidden",
-          },
-        }}
-      />
-      <CardContent
-        sx={{
-          paddingBottom: 0,
-        }}
-      >
-        <Link href={`/users/${user.login}`}>
-          <CardMedia
-            component="img"
-            image={user.avatar_url}
-            sx={{
-              objectFit: "contain",
-            }}
-          />
-        </Link>
-      </CardContent>
-      <CardActions>
-        <Tooltip
-          title={
-            favorites.some((element) => element.id === user.id)
-              ? "remove from favorites"
-              : "add to favorites"
-          }
-        >
-          <IconButton>
-            {favorites.some((element) => element.id === user.id) ? (
-              <HeartIconSolid
-                color="crimson"
-                width={40}
-                height={40}
-                onClick={() => removeFromFavorites(user.id)}
-              />
-            ) : (
-              <HeartIconOutline
-                color="crimson"
-                width={40}
-                height={40}
-                onClick={() => addToFavorites(user.id)}
-              />
-            )}
-          </IconButton>
-        </Tooltip>
-      </CardActions>
-    </Card>
+          </Box>
+          <Tooltip
+            title={
+              favorites.some((element) => element.id === user.id)
+                ? "remove from favorites"
+                : "add to favorites"
+            }
+          >
+            <IconButton>
+              {favorites.some((element) => element.id === user.id) ? (
+                <HeartIconSolid
+                  color="crimson"
+                  width={30}
+                  height={30}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    removeFromFavorites(user.id);
+                  }}
+                />
+              ) : (
+                <HeartIconOutline
+                  color="crimson"
+                  width={30}
+                  height={30}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    addToFavorites(user.id);
+                  }}
+                />
+              )}
+            </IconButton>
+          </Tooltip>
+        </Box>
+      </Link>
+    </Paper>
   );
 };
 

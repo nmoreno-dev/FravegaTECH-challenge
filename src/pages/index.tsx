@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useListGithubUsers } from "../querys/useGitHubUsers.query";
 import UserCard from "../components/UserCard";
 import Searcher from "../components/Search";
-import { Box } from "@mui/material";
+import { Grid2 } from "@mui/material";
 
 export default function Home() {
   // Hook para listar todos los usuarios si no hay búsqueda activa
@@ -31,16 +31,16 @@ export default function Home() {
         {/* Mostrar la lista de usuarios, completa o filtrada */}
         {!isLoadingList && !isErrorList && usersData && (
           <main>
-            <Box
-              display={"flex"}
-              flexWrap={"wrap"}
-              gap={2}
-              justifyContent={"space-evenly"}
-            >
+            <Grid2 container>
               {usersData.map((user) => (
-                <UserCard key={user.id} user={user} />
+                <Grid2
+                  key={user.id}
+                  size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}
+                >
+                  <UserCard user={user} />
+                </Grid2>
               ))}
-            </Box>
+            </Grid2>
           </main>
         )}
       </div>
