@@ -9,9 +9,10 @@ import {
   CardHeader,
   CardMedia,
   IconButton,
+  Tooltip,
   Typography,
 } from "@mui/material";
-import { HeartIcon } from "@heroicons/react/24/outline";
+import { HeartIcon as HeartIconOutline } from "@heroicons/react/24/outline";
 
 const UserCard = ({ user }: { user: GitHubUserListItem }) => {
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites(
@@ -57,23 +58,31 @@ const UserCard = ({ user }: { user: GitHubUserListItem }) => {
         </Link>
       </CardContent>
       <CardActions>
-        <IconButton>
-          {favorites.some((element) => element.id === user.id) ? (
-            <HeartIconSolid
-              color="crimson"
-              width={40}
-              height={40}
-              onClick={() => removeFromFavorites(user.id)}
-            />
-          ) : (
-            <HeartIcon
-              color="crimson"
-              width={40}
-              height={40}
-              onClick={() => addToFavorites(user.id)}
-            />
-          )}
-        </IconButton>
+        <Tooltip
+          title={
+            favorites.some((element) => element.id === user.id)
+              ? "remove from favorites"
+              : "add to favorites"
+          }
+        >
+          <IconButton>
+            {favorites.some((element) => element.id === user.id) ? (
+              <HeartIconSolid
+                color="crimson"
+                width={40}
+                height={40}
+                onClick={() => removeFromFavorites(user.id)}
+              />
+            ) : (
+              <HeartIconOutline
+                color="crimson"
+                width={40}
+                height={40}
+                onClick={() => addToFavorites(user.id)}
+              />
+            )}
+          </IconButton>
+        </Tooltip>
       </CardActions>
     </Card>
   );

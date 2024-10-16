@@ -44,6 +44,7 @@ async function getUserByUserName(userName: string) {
     const response = await gitHubApi.get<GitHubUser>(`/users/${userName}`);
 
     if (response && response.data) {
+      console.log(response.data);
       return response.data;
     }
   } catch (error) {
@@ -58,7 +59,6 @@ async function fetchUserRespositories(userName: string) {
     );
 
     if (response && response.data) {
-      console.log(response.data);
       return response.data;
     }
   } catch (error) {
