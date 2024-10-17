@@ -34,6 +34,7 @@ const Repositories = ({
       flexWrap={"wrap"}
       gap={4}
       justifyContent={"space-between"}
+      data-testid="user-repositories"
     >
       {isError ? (
         <Typography role="alert">Error getting repositories</Typography>

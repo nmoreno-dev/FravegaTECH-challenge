@@ -55,7 +55,9 @@ const User = () => {
   return (
     <>
       <Head>
-        <title>{user ? `${user.login} - GitHub Profile` : "Loading..."}</title>
+        <title data-testid="page-title">
+          {user ? `${user.login} - GitHub Profile` : "Loading..."}
+        </title>
         <meta
           name="description"
           content={
@@ -92,40 +94,61 @@ const User = () => {
       </Head>
 
       {!isUserError && (
-        <Grid2 container spacing={2} margin={"10px"}>
-          <Grid2 size={{ xs: 12, md: 4 }}>
+        <Grid2
+          container
+          spacing={2}
+          margin={"10px"}
+          data-testid="user-page-container"
+        >
+          <Grid2 size={{ xs: 12, md: 4 }} data-testid="user-info-section">
             {isUserLoading ? (
+              // MARK: User Skeleton
               <>
-                <Stack spacing={1}>
+                <Stack spacing={1} data-testid="user-loading-skeleton">
                   <Stack display={"flex"} direction={"row"} gap={1}>
-                    {/* For variant="text", adjust the height via font-size */}
-                    {/* For other variants, adjust the size with `width` and `height` */}
-                    <Skeleton variant="circular" width={40} height={40} />
-                    {
-                      // MARK: User Skeleton
-                    }
+                    <Skeleton
+                      variant="circular"
+                      width={40}
+                      height={40}
+                      data-testid="user-avatar-skeleton"
+                    />
                     <Stack flexGrow={1}>
                       <Skeleton
                         variant="text"
                         sx={{ fontSize: "1rem", width: "100%" }}
+                        data-testid="user-name-skeleton"
                       />
                       <Skeleton
                         variant="text"
                         sx={{ fontSize: "1rem", width: "100%" }}
+                        data-testid="user-login-skeleton"
                       />
                     </Stack>
-                    <Skeleton variant="rectangular" width={60} height={60} />
+                    <Skeleton
+                      variant="rectangular"
+                      width={60}
+                      height={60}
+                      data-testid="user-favorite-skeleton"
+                    />
                   </Stack>
                   <Stack gap={1} flexGrow={1}>
-                    <Skeleton variant="rectangular" height={60} />
-                    <Skeleton variant="rounded" height={60} />
+                    <Skeleton
+                      variant="rectangular"
+                      height={60}
+                      data-testid="user-bio-skeleton"
+                    />
+                    <Skeleton
+                      variant="rounded"
+                      height={60}
+                      data-testid="user-details-skeleton"
+                    />
                   </Stack>
                 </Stack>
               </>
             ) : (
+              // MARK: USer
               user && (
-                // MARK: User
-                <Box>
+                <Box data-testid="user-info-box">
                   <Box display={"flex"} alignItems={"center"}>
                     <Avatar
                       src={user.avatar_url}
@@ -134,6 +157,7 @@ const User = () => {
                         width: 60,
                         height: 60,
                       }}
+                      data-testid="user-avatar"
                     />
                     <Box
                       marginLeft={"10px"}
@@ -142,10 +166,18 @@ const User = () => {
                       alignContent={"center"}
                     >
                       <Box>
-                        <Typography variant="h1" fontSize={"1.5rem"}>
+                        <Typography
+                          variant="h1"
+                          fontSize={"1.5rem"}
+                          data-testid="user-name"
+                        >
                           {user.name}
                         </Typography>
-                        <Typography variant="h3" fontSize={"1.3rem"}>
+                        <Typography
+                          variant="h3"
+                          fontSize={"1.3rem"}
+                          data-testid="user-login"
+                        >
                           {user.login}
                         </Typography>
                       </Box>
@@ -156,7 +188,7 @@ const User = () => {
                             : "add to favorites"
                         }
                       >
-                        <IconButton>
+                        <IconButton data-testid="favorite-button">
                           {favorites.some(
                             (element) => element.id === user.id
                           ) ? (
@@ -165,6 +197,7 @@ const User = () => {
                               width={40}
                               height={40}
                               onClick={() => removeFromFavorites(user.id)}
+                              data-testid="remove-from-favorites"
                             />
                           ) : (
                             <HeartIconOutline
@@ -172,6 +205,7 @@ const User = () => {
                               width={40}
                               height={40}
                               onClick={() => addToFavorites(user.id)}
+                              data-testid="add-to-favorites"
                             />
                           )}
                         </IconButton>
@@ -184,6 +218,7 @@ const User = () => {
                     gap={1}
                     width={"100%"}
                     justifyContent={"start"}
+                    data-testid="user-location"
                   >
                     <Box display={"flex"} gap={1}>
                       <MapPinIcon width={20} height={20} color="orangeRed" />
@@ -202,22 +237,29 @@ const User = () => {
                     gap={1}
                     width={"100%"}
                     justifyContent={"start"}
+                    data-testid="user-followers-following"
                   >
                     <Box display={"flex"} gap={1}>
-                      <Typography fontWeight={"bold"}>
+                      <Typography
+                        fontWeight={"bold"}
+                        data-testid="user-followers"
+                      >
                         {user.followers}
                       </Typography>
                       <Typography>Followers</Typography>
                     </Box>
                     <Box display={"flex"} gap={1}>
-                      <Typography fontWeight={"bold"}>
+                      <Typography
+                        fontWeight={"bold"}
+                        data-testid="user-following"
+                      >
                         {user.following}
                       </Typography>
                       <Typography>Following</Typography>
                     </Box>
                   </Box>
                   {user.bio && (
-                    <Paper>
+                    <Paper data-testid="user-bio">
                       <Box
                         border={"1px solid"}
                         borderRadius={"4px"}
@@ -235,12 +277,21 @@ const User = () => {
               )
             )}
           </Grid2>
-          <Grid2 flexDirection={"column"} size={{ xs: 12, md: 8 }} container>
+          <Grid2
+            flexDirection={"column"}
+            size={{ xs: 12, md: 8 }}
+            container
+            data-testid="repositories-section"
+          >
+            {/**
+             * MARK: Repositories
+             */}
             <Grid2 size={12}>
-              {/*
-                MARK: Repositories
-              */}
-              <Typography variant="h2" sx={{ p: 1 }}>
+              <Typography
+                variant="h2"
+                sx={{ p: 1 }}
+                data-testid="repositories-title"
+              >
                 Repositories
               </Typography>
             </Grid2>

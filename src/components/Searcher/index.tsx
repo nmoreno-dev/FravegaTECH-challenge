@@ -17,7 +17,6 @@ const Searcher: React.FC = () => {
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  // Hook para buscar usuarios filtrados
   const {
     data: filteredUsers,
     isLoading: isLoadingFilters,
@@ -60,6 +59,7 @@ const Searcher: React.FC = () => {
       display={"flex"}
       justifyContent={"center"}
       padding={"20px"}
+      data-testid="searcher-container"
     >
       <Box
         maxWidth={"650px"}
@@ -68,6 +68,7 @@ const Searcher: React.FC = () => {
         flexDirection={"column"}
         justifyContent={"center"}
         position={"relative"}
+        data-testid="search-box-container"
       >
         <TextField
           variant="outlined"
@@ -77,11 +78,15 @@ const Searcher: React.FC = () => {
           onChange={handleChange}
           value={searchQuery}
           aria-label="Search GitHub users"
+          data-testid="search-input"
           slotProps={{
             input: {
               endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={handleClear}>
+                <InputAdornment
+                  position="end"
+                  data-testid="clear-button-adornment"
+                >
+                  <IconButton onClick={handleClear} data-testid="clear-button">
                     <XMarkIcon width={25} height={25} />
                   </IconButton>
                 </InputAdornment>
@@ -90,8 +95,8 @@ const Searcher: React.FC = () => {
           }}
         />
         {searchQuery && !isErrorFilters && (
-          <SearchResults>
-            <Grid2 container>
+          <SearchResults data-testid="search-results">
+            <Grid2 container data-testid="results-grid">
               {(filteredUsers && !isLoadingFilters && !isRefetchingFilters
                 ? filteredUsers
                 : new Array(6).fill(null)
@@ -100,6 +105,7 @@ const Searcher: React.FC = () => {
                   key={user ? user.id : i}
                   size={{ xs: 12, sm: array.length > 1 ? 6 : 12 }}
                   width={"100%"}
+                  data-testid="user-card-grid"
                 >
                   <UserCard
                     user={user}

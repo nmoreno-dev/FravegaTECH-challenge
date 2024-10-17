@@ -33,7 +33,7 @@ const UserCard = ({
   );
 
   return (
-    <Paper sx={{ p: 1, m: 1 }}>
+    <Paper sx={{ p: 1, m: 1 }} data-testid="user-card">
       {isLoading && (
         <Stack direction={"row"} alignItems={"center"} gap={1}>
           <Skeleton variant="circular" width={60} height={50} />
