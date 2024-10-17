@@ -1,4 +1,4 @@
-# My App
+# GitHub Users API
 
 ## Descripción
 
