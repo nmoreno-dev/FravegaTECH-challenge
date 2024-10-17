@@ -1,7 +1,7 @@
 import { useListGithubUsers } from "../querys/useGitHubUsers.query";
 import UserCard from "../components/UserCard";
 import Searcher from "../components/Search";
-import { Box, Grid2, Skeleton, Stack } from "@mui/material";
+import { Box, Grid2, Skeleton, Stack, Typography } from "@mui/material";
 
 export default function Home() {
   const {
@@ -35,7 +35,7 @@ export default function Home() {
           </Grid2>
         )}
 
-        {isErrorList && <p>Error al obtener los usuarios</p>}
+        {isErrorList && <Typography>Error getting list of users.</Typography>}
 
         {!isLoadingList && !isErrorList && usersData && (
           <Grid2 container spacing={2}>

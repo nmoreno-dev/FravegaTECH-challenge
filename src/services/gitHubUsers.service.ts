@@ -19,6 +19,7 @@ async function listUsers() {
     return [];
   } catch (error) {
     console.error(error);
+    throw new Error("Error fetchign list of users.");
   }
 }
 
@@ -36,6 +37,7 @@ async function searchUsers(query: string) {
     return [];
   } catch (error) {
     console.error(error);
+    throw new Error("Error fetchign search results.");
   }
 }
 
@@ -49,6 +51,7 @@ async function getUserByUserName(userName: string) {
     }
   } catch (error) {
     console.error(error);
+    throw new Error("Error fetchign user data.");
   }
 }
 
@@ -63,6 +66,7 @@ async function fetchUserRespositories(userName: string) {
     }
   } catch (error) {
     console.error(error);
+    throw new Error("Error fetchign user repos.");
   }
 }
 

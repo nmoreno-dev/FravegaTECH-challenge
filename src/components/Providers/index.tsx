@@ -1,9 +1,13 @@
 "use client";
 
 import React, { PropsWithChildren, useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { createTheme, ThemeProvider } from "@mui/material";
-import { Toaster } from "sonner";
+import { toast, Toaster } from "sonner";
 
 const darkTheme = createTheme({
   palette: {
@@ -18,7 +22,16 @@ const darkTheme = createTheme({
 });
 
 const Providers: React.FC<PropsWithChildren> = ({ children }) => {
-  const [queryClient] = useState(() => new QueryClient({}));
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        queryCache: new QueryCache({
+          onError: (error) => {
+            toast.error(error.message);
+          },
+        }),
+      })
+  );
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={darkTheme}>
