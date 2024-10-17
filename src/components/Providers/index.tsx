@@ -1,9 +1,9 @@
 "use client";
 
-import React, { PropsWithChildren } from "react";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "../../config/queryClient.config";
+import React, { PropsWithChildren, useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createTheme, ThemeProvider } from "@mui/material";
+import { Toaster } from "sonner";
 
 const darkTheme = createTheme({
   palette: {
@@ -18,9 +18,20 @@ const darkTheme = createTheme({
 });
 
 const Providers: React.FC<PropsWithChildren> = ({ children }) => {
+  const [queryClient] = useState(() => new QueryClient({}));
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={darkTheme}>{children}</ThemeProvider>
+      <ThemeProvider theme={darkTheme}>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            style: {
+              background: "crimson",
+            },
+          }}
+        />
+        {children}
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };
