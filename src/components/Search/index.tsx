@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState, memo } from "react";
 import debounce from "lodash.debounce";
 import { useSearchGithubUsers } from "../../querys/useGitHubUsers.query";
 import SearchResults from "../SearchResults";
-import { queryClient } from "../../config/queryClient.config";
 import {
   Box,
   Grid2,
@@ -12,8 +11,10 @@ import {
 } from "@mui/material";
 import { XMarkIcon } from "@heroicons/react/16/solid";
 import UserCard from "../UserCard";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Searcher: React.FC = () => {
+  const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Hook para buscar usuarios filtrados

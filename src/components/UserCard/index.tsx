@@ -5,7 +5,6 @@ import { HeartIcon as HeartIconSolid } from "@heroicons/react/16/solid";
 import {
   Avatar,
   Box,
-  Grid2,
   IconButton,
   Paper,
   Skeleton,

@@ -8,7 +8,6 @@ import {
   MapPinIcon,
 } from "@heroicons/react/16/solid";
 import { useEffect } from "react";
-import { queryClient } from "../../config/queryClient.config";
 import { useGetUserReposByUserName } from "../../querys/useGitHubUsers.query";
 import {
   Avatar,
@@ -23,9 +22,11 @@ import {
 } from "@mui/material";
 import Repositories from "../../components/Repositories";
 import Head from "next/head";
+import { useQueryClient } from "@tanstack/react-query";
 
 const User = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { addToFavorites, removeFromFavorites, favorites } = useFavorites(
     (state) => state
@@ -247,7 +248,7 @@ const User = () => {
               <Repositories
                 repos={userRepos}
                 isError={isUserReposError}
-                isLoading={isUserReposLoading}
+                isLoading={isUserReposLoading || isUserLoading}
               />
             </Grid2>
           </Grid2>

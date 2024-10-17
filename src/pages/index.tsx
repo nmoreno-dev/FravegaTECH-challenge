@@ -17,11 +17,17 @@ export default function Home() {
 
         {isLoadingList && (
           <Grid2 container spacing={2}>
-            {new Array(6).fill("").map((_, i) => (
+            {new Array(18).fill("").map((_, i) => (
               <Grid2 key={i} size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}>
-                <Stack direction={"row"} alignItems={"center"} gap={1}>
-                  <Skeleton variant="circular" width={60} height={50} />
-                  <Skeleton variant="text" width={200} />
+                <Stack
+                  direction={"row"}
+                  alignItems={"center"}
+                  width={"100%"}
+                  gap={1}
+                  sx={{ m: 1, p: 1 }}
+                >
+                  <Skeleton variant="circular" width={60} height={60} />
+                  <Skeleton variant="text" width={"100%"} />
                   <Skeleton variant="rectangular" width={40} height={40} />
                 </Stack>
               </Grid2>
