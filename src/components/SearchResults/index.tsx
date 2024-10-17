@@ -1,12 +1,7 @@
-import { GitHubUserListItem } from "../../interfaces/gitHubUser.interface";
-import UserCard from "../UserCard";
-import { Box, Grid2 } from "@mui/material";
+import React, { PropsWithChildren } from "react";
+import { Box } from "@mui/material";
 
-interface SearchResultsProps {
-  data: GitHubUserListItem[];
-}
-
-const SearchResults = ({ data }: SearchResultsProps) => {
+const SearchResults: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <Box overflow={"hidden"}>
       <Box
@@ -28,13 +23,7 @@ const SearchResults = ({ data }: SearchResultsProps) => {
           overflowY: "scroll",
         }}
       >
-        <Grid2 container>
-          {data.map((user) => (
-            <Grid2 key={user.id} size={{ xs: 12, sm: 6, md: 6, lg: 6, xl: 6 }}>
-              <UserCard user={user} />
-            </Grid2>
-          ))}
-        </Grid2>
+        {children}
       </Box>
     </Box>
   );

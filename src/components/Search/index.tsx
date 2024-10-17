@@ -3,8 +3,15 @@ import debounce from "lodash.debounce";
 import { useSearchGithubUsers } from "../../querys/useGitHubUsers.query";
 import SearchResults from "../SearchResults";
 import { queryClient } from "../../config/queryClient.config";
-import { Box, IconButton, InputAdornment, TextField } from "@mui/material";
+import {
+  Box,
+  Grid2,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
 import { XMarkIcon } from "@heroicons/react/16/solid";
+import UserCard from "../UserCard";
 
 const Searcher: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -13,6 +20,7 @@ const Searcher: React.FC = () => {
   const {
     data: filteredUsers,
     isLoading: isLoadingFilters,
+    isRefetching: isRefetchingFilters,
     isError: isErrorFilters,
     refetch: refetchFilters,
   } = useSearchGithubUsers(searchQuery, { enabled: false });
@@ -33,7 +41,9 @@ const Searcher: React.FC = () => {
   };
 
   const handleClear = () => {
-    queryClient.removeQueries({ queryKey: ["gitHubFilteredUsers"] });
+    queryClient.removeQueries({
+      queryKey: ["gitHubFilteredUsers"],
+    });
     setSearchQuery("");
   };
 
@@ -78,10 +88,27 @@ const Searcher: React.FC = () => {
             },
           }}
         />
-        {searchQuery &&
-          !isLoadingFilters &&
-          !isErrorFilters &&
-          filteredUsers && <SearchResults data={filteredUsers} />}
+        {searchQuery && !isErrorFilters && (
+          <SearchResults>
+            <Grid2 container>
+              {(filteredUsers && !isLoadingFilters && !isRefetchingFilters
+                ? filteredUsers
+                : new Array(6).fill(null)
+              ).map((user, i, array) => (
+                <Grid2
+                  key={user ? user.id : i}
+                  size={{ xs: 12, sm: array.length > 1 ? 6 : 12 }}
+                  width={"100%"}
+                >
+                  <UserCard
+                    user={user}
+                    isLoading={isLoadingFilters || isRefetchingFilters}
+                  />
+                </Grid2>
+              ))}
+            </Grid2>
+          </SearchResults>
+        )}
       </Box>
     </Box>
   );

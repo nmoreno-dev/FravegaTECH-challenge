@@ -14,21 +14,21 @@ export const useSearchGithubUsers = (
   options?: { enabled?: boolean }
 ) =>
   useQuery({
-    queryKey: ["gitHubFilteredUsers"],
+    queryKey: ["gitHubFilteredUsers", query],
     queryFn: () => gitHubUsersService.searchUsers(query!),
     enabled: !!query && options?.enabled,
   });
 
 export const useGetUserByUserName = (userName: string) =>
   useQuery({
-    queryKey: ["gitHubUser"],
+    queryKey: ["gitHubUser", userName],
     queryFn: () => gitHubUsersService.getUserByUserName(userName!),
     enabled: !!userName,
   });
 
 export const useGetUserReposByUserName = (userName?: string) =>
   useQuery({
-    queryKey: ["userRepos"],
+    queryKey: ["userRepos", userName],
     queryFn: () => gitHubUsersService.fetchUserRespositories(userName!),
     enabled: !!userName,
   });

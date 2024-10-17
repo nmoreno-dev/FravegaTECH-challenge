@@ -4,6 +4,8 @@ import {
   CardActions,
   CardHeader,
   Grid2,
+  Skeleton,
+  Stack,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -20,7 +22,11 @@ interface RepositoriesProps {
   isError?: boolean;
 }
 
-const Repositories = ({ repos, isError, isLoading }: RepositoriesProps) => {
+const Repositories = ({
+  repos,
+  isError,
+  isLoading = true,
+}: RepositoriesProps) => {
   return (
     <Box
       sx={{ p: 1 }}
@@ -32,10 +38,26 @@ const Repositories = ({ repos, isError, isLoading }: RepositoriesProps) => {
       {isError ? (
         <Typography role="alert">Error getting repositories</Typography>
       ) : isLoading ? (
-        <Typography>Loading repositories...</Typography>
+        // MARK: repo skeleton
+        <Grid2 container size={12}>
+          {new Array(4).fill("").map((_, i) => (
+            <Grid2
+              key={i}
+              size={{ xs: 12, sm: 6, md: 6, lg: 4, xl: 3 }}
+              component="article"
+            >
+              <Stack sx={{ m: 1 }}>
+                <Skeleton variant="text" />
+                <Skeleton variant="text" />
+                <Skeleton variant="rectangular" height={40} />
+              </Stack>
+            </Grid2>
+          ))}
+        </Grid2>
       ) : repos ? (
         <Grid2 container size={12}>
           {repos.map((repo) => (
+            // MARK: repo
             <Grid2
               key={repo.id}
               size={{ xs: 12, sm: 6, md: 6, lg: 4, xl: 3 }}
