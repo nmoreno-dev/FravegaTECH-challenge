@@ -1,4 +1,3 @@
-// __tests__/User.test.js
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import User from "../pages/users/[userName]";
@@ -10,7 +9,6 @@ import {
 import { ReactNode } from "react";
 import { useRouter } from "next/router";
 
-// Mockear la librería completa de React Query
 jest.mock("@tanstack/react-query", () => {
   const originalModule = jest.requireActual("@tanstack/react-query");
   return {
@@ -19,7 +17,6 @@ jest.mock("@tanstack/react-query", () => {
   };
 });
 
-// Mockear el router de Next.js
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
@@ -37,10 +34,8 @@ describe("User Page", () => {
   };
 
   it("renders loading skeletons when user data is loading", () => {
-    // Mockear el estado del router
     (useRouter as jest.Mock).mockReturnValue({ query: { userName: "user1" } });
 
-    // Simular el estado de carga del usuario
     (useQuery as jest.Mock).mockImplementation(() => ({
       data: undefined,
       isLoading: true,
@@ -52,16 +47,13 @@ describe("User Page", () => {
 
     renderWithClient(<User />);
 
-    // Verificar que los skeletons se renderizan correctamente
     const skeletons = screen.getByTestId("user-loading-skeleton");
     expect(skeletons).toBeInTheDocument();
   });
 
   it("renders error message when there is an error loading user data", () => {
-    // Mockear el estado del router
     (useRouter as jest.Mock).mockReturnValue({ query: { userName: "user1" } });
 
-    // Simular el estado de error del usuario
     (useQuery as jest.Mock).mockImplementation(() => ({
       data: undefined,
       isLoading: false,
@@ -73,15 +65,12 @@ describe("User Page", () => {
 
     renderWithClient(<User />);
 
-    // Verificar que la página no se renderiza debido al error
     expect(screen.queryByTestId("user-page-container")).not.toBeInTheDocument();
   });
 
   it("renders user data when data is available", () => {
-    // Mockear el estado del router
     (useRouter as jest.Mock).mockReturnValue({ query: { userName: "user1" } });
 
-    // Simular que hay datos de usuario
     const mockUserData = {
       id: 1,
       login: "user1",
@@ -110,7 +99,6 @@ describe("User Page", () => {
 
     renderWithClient(<User />);
 
-    // Verificar que se renderizan los datos del usuario
     expect(screen.getByTestId("user-avatar")).toBeInTheDocument();
     expect(screen.getByTestId("user-name")).toHaveTextContent("User One");
     expect(screen.getByTestId("user-login")).toHaveTextContent("user1");
@@ -123,10 +111,8 @@ describe("User Page", () => {
   });
 
   it("renders repositories when user repos data is available", () => {
-    // Mockear el estado del router
     (useRouter as jest.Mock).mockReturnValue({ query: { userName: "user1" } });
 
-    // Simular que hay datos de usuario y repositorios
     const mockUserData = {
       id: 1,
       login: "user1",
@@ -168,7 +154,6 @@ describe("User Page", () => {
 
     renderWithClient(<User />);
 
-    // Verificar que se renderizan los repositorios del usuario
     const repositoriesTitle = screen.getByTestId("repositories-title");
     expect(repositoriesTitle).toHaveTextContent("Repositories");
     expect(screen.getByTestId("user-repositories")).toBeInTheDocument();

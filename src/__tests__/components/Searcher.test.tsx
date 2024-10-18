@@ -1,4 +1,3 @@
-// __tests__/Searcher.test.js
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -6,7 +5,6 @@ import { useSearchGithubUsers } from "../../querys/useGitHubUsers.query";
 import { ReactNode } from "react";
 import Searcher from "../../components/Searcher";
 
-// Mock the useSearchGithubUsers hook
 jest.mock("../../querys/useGitHubUsers.query", () => ({
   useSearchGithubUsers: jest.fn(),
 }));

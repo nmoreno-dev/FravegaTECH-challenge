@@ -1,4 +1,3 @@
-// __tests__/Home.test.js
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Home from "../pages";
@@ -9,7 +8,6 @@ import {
 } from "@tanstack/react-query";
 import { ReactNode } from "react";
 
-// Mockear la librería completa de React Query
 jest.mock("@tanstack/react-query", () => {
   const originalModule = jest.requireActual("@tanstack/react-query");
   return {
@@ -31,7 +29,6 @@ describe("Home Page", () => {
   };
 
   it("renders loading skeletons when data is loading", () => {
-    // Simular el estado de carga
     (useQuery as jest.Mock).mockImplementation(() => ({
       data: undefined,
       isLoading: true,
@@ -48,7 +45,6 @@ describe("Home Page", () => {
   });
 
   it("renders error message when there is an error", () => {
-    // Simular el estado de error
     (useQuery as jest.Mock).mockImplementation(() => ({
       data: undefined,
       isLoading: false,
@@ -60,12 +56,10 @@ describe("Home Page", () => {
 
     renderWithClient(<Home />);
 
-    // Verificar que el mensaje de error se muestra
     expect(screen.getByTestId("error-message")).toBeInTheDocument();
   });
 
   it("renders user data when data is available", () => {
-    // Simular que hay datos de usuarios
     const mockUserData = [
       { id: 1, login: "user1", avatar_url: "https://via.placeholder.com/150" },
       { id: 2, login: "user2", avatar_url: "https://via.placeholder.com/150" },
@@ -82,8 +76,7 @@ describe("Home Page", () => {
 
     renderWithClient(<Home />);
 
-    // Verificar que se renderizan las tarjetas de usuario
     const userCards = screen.getAllByTestId("user-card");
-    expect(userCards.length).toBe(2); // Debería haber 2 usuarios en la lista
+    expect(userCards.length).toBe(2);
   });
 });
